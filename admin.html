@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem POS Angkringan | Kontrol Penuh Admin</title>
+    <style>
+        /* ==================================== */
+        /* GAYA UMUM & ANIMASI */
+        /* ==================================== */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+        header { 
+            background-color: #3b2053; /* Dark Purple header */
+            color: white; 
+            padding: 80px 0; 
+            text-align: center; 
+        }
+        header h1 { font-size: 2.8em; margin-bottom: 5px; }
+        header p { font-size: 1.6em; font-weight: 300; }
+        
+        img.main-visual { 
+            max-width: 80%; 
+            height: auto; 
+            margin: 30px 0; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); 
+            border: 4px solid #9b59b6; /* Aksen warna Admin */
+        }
+        
+        /* CTA */
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Jarak antar tombol */
+            margin-top: 25px;
+        }
+
+        .cta-button { 
+            background-color: #e67e22; 
+            color: white; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            display: inline-block; 
+            transition: background-color 0.3s, transform 0.2s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .cta-button:hover { background-color: #d35400; transform: scale(1.05); }
+        .section { padding: 60px 0; border-bottom: 1px solid #ecf0f1; }
+        
+        /* FEATURES GRID & CLICKABLE */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; text-align: left; }
+        .feature-item { 
+            padding: 25px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            background: #fdfdfd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-item:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+        }
+        .feature-item h4 { font-size: 1.3em; color: #34495e; }
+
+        /* GAYA THUMBNAIL FITUR */
+        .feature-item img.feature-thumbnail {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* TECH STACK & METRICS */
+        .tech-stack ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; }
+        .tech-stack li { background-color: #fce4ec; color: #880e4f; padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+        .metrics-grid { display: flex; justify-content: space-around; text-align: center; margin-top: 30px; }
+        .metric-item h3 { color: #9b59b6; font-size: 3em; margin-bottom: 5px; }
+        footer { background-color: #34495e; color: white; text-align: center; padding: 40px 0; }
+        
+        /* GAYA MODAL/LIGHTBOX */
+        .modal {
+            position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9); display: none;
+            justify-content: center; align-items: center; overflow: auto;
+        }
+        .modal-content {
+            background-color: #fefefe; padding: 30px; border-radius: 15px; width: 90%; max-width: 850px;
+            position: relative; box-shadow: 0 5px 30px rgba(0,0,0,0.5); animation-name: animatescale; animation-duration: 0.3s;
+        }
+        .modal-content h3 { color: #9b59b6; }
+        .modal-content img { max-width: 100%; height: auto; display: block; margin: 20px auto; border-radius: 8px; border: 1px solid #ddd;}
+        .close-button {
+            color: #aaa; float: right; font-size: 36px; font-weight: bold; cursor: pointer; line-height: 1;
+            padding: 0 8px; position: absolute; top: 15px; right: 20px;
+        }
+        .close-button:hover, .close-button:focus { color: #e74c3c; text-decoration: none; }
+        @keyframes animatescale {
+            from {transform: scale(0.7); opacity: 0;} to {transform: scale(1); opacity: 1;}
+        }
+
+        /* ==================================== */
+        /* MEDIA QUERIES UNTUK MOBILE */
+        /* ==================================== */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            header p { font-size: 1.2em; }
+            .container { padding: 10px; }
+            .features-grid { 
+                grid-template-columns: 1fr; /* Stack fitur menjadi satu kolom */
+                gap: 20px;
+            }
+            .metrics-grid {
+                flex-direction: column; /* Stack metrik vertikal */
+                gap: 20px;
+            }
+            .metric-item {
+                border: 1px solid #eee;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .cta-container {
+                flex-direction: column; /* Stack tombol CTA */
+            }
+            .cta-button {
+                width: 80%; /* Tombol lebih lebar di mobile */
+                margin: 5px auto;
+            }
+            .modal-content {
+                width: 95%; /* Modal lebih lebar di mobile */
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Sistem Point of Sale (POS) | Administrasi</h1>
+            <p>Pusat Kontrol Bisnis: Laporan, Inventaris, dan Manajemen Staf.</p>
+            
+            <img src="img/Admin.png" alt="Visual Utama Proyek" class="main-visual"> 
+
+            <div class="cta-container">
+                <a href="kasir.html" class="cta-button" style="background-color: #3498db;">Lihat Fitur Kasir</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="ringkasan" class="section container">
+        <h2>Ringkasan Proyek & Kontrol Bisnis</h2>
+        <p>Dashboard Administrator dirancang untuk memberi pemilik bisnis kontrol penuh atas operasional. Mulai dari pemantauan real-time hingga pengelolaan izin akses, sistem ini menyediakan semua alat yang dibutuhkan untuk pertumbuhan dan keamanan data.</p>
+    </section>
+
+    <section id="fitur" class="section container">
+        <h2>Fitur Utama (Dashboard Admin)</h2>
+        <div class="features-grid">
+            
+            <div class="feature-item" data-modal-target="modal-fitur1">
+                <img src="img/Admin.png" alt="Login Admin" class="feature-thumbnail">
+                <h4>Admin Login & Keamanan Data</h4>
+                <p>Memastikan akses hanya untuk Admin/Owner untuk menjaga keamanan data sensitif dan laporan bisnis.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur2">
+                <img src="img/Dashboard.png" alt="Dashboard" class="feature-thumbnail">
+                <h4>Dashboard Analitik Real-Time</h4>
+                <p>Ringkasan performa bisnis, pendapatan, dan tren pesanan 7 hari terakhir dalam visual yang mudah dipahami.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur3">
+                <img src="img/Manajemen Produk.png" alt="Manajemen Produk" class="feature-thumbnail">
+                <h4>Manajemen Produk & Stok</h4>
+                <p>Mengelola katalog menu, harga, dan memantau stok inventaris secara akurat dan terpusat.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur4">
+                <img src="img/Manajemen Kategori.png" alt="Manajemen Kategori" class="feature-thumbnail">
+                <h4>Manajemen Kategori Menu</h4>
+                <p>Alat untuk mengorganisir produk ke dalam kelompok yang rapi (Makanan, Minuman, Snack) dan efisien.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur5">
+                <img src="img/Manajemen Pesanan.png" alt="Manajemen Pesanan" class="feature-thumbnail">
+                <h4>Pelacakan Pesanan & Status</h4>
+                <p>Melacak semua riwayat transaksi, status pembayaran (Gagal/Selesai), dan memantau rekonsiliasi keuangan.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur6">
+                <img src="img/Manajemen User.png" alt="Manajemen User" class="feature-thumbnail">
+                <h4>Manajemen Staf & Akun</h4>
+                <p>Mengelola akun staf (Kasir, Admin), memastikan setiap pengguna memiliki akses dan peran yang sesuai.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur7">
+                <img src="img/Manajemen Role.png" alt="Manajemen Role" class="feature-thumbnail">
+                <h4>Matriks Role & Permissions</h4>
+                <p>Fitur keamanan yang menentukan hak akses spesifik per peran (Admin vs Kasir) untuk perlindungan data.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur8">
+                <img src="img/Manajemen Member.png" alt="Manajemen Member" class="feature-thumbnail">
+                <h4>Program Loyalitas Member</h4>
+                <p>Mencatat pelanggan, melacak poin loyalitas, dan mendukung inisiatif retensi pelanggan.</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="hasil" class="section container">
+        <h2>Dampak & Metrik Keberhasilan Proyek</h2>
+        <div class="metrics-grid">
+            
+            <div class="metric-item">
+                <h3>40%</h3>
+                <p>Peningkatan User Engagement dalam 6 bulan pertama.</p>
+            </div>
+
+            <div class="metric-item">
+                <h3>2.5 detik</h3>
+                <p>Pengurangan Load Time Halaman Utama (Sebelum 4 detik).</p>
+            </div>
+
+            <div class="metric-item">
+                <h3>10.000+</h3>
+                <p>Transaksi per hari yang berhasil ditangani tanpa downtime.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3>Tertarik Menggunakan Solusi POS Penuh Kontrol Ini?</h3>
+            
+            <a href="https://wa.me/6282279513201" class="cta-button" style="background-color: #2ecc71;">Hubungi Kami Via WhatsApp</a>
+            <a href="https://swakarsadigital.vercel.app/" class="cta-button" style="background-color: #95a5a6; margin-left: 10px;">Portofolio Lain</a>
+            
+            <p style="margin-top: 20px;">© 2025 swakarsadigital. Dibuat dengan Passion & Presisi.</p>
+        </div>
+    </footer>
+
+    <div id="modal-fitur1" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Admin Login & Keamanan Data</h3>
+            <img src="img/Admin.png" alt="Halaman Login POS">
+            <p>Halaman otentikasi yang dirancang dengan visual ungu khas Admin. Memastikan bahwa hanya individu dengan hak akses tertinggi yang dapat masuk ke Dashboard *back-office*.</p>
+        </div>
+    </div>
+    <div id="modal-fitur2" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Dashboard Analitik Real-Time</h3>
+            <img src="img/Dashboard.png" alt="Detail Tampilan Dashboard">
+            <p>Menyajikan metrik kinerja utama (KPI) dan aktivitas terbaru secara *real-time*. Termasuk grafik Pendapatan dan Pesanan 7 Hari Terakhir untuk analisis cepat.</p>
+        </div>
+    </div>
+    <div id="modal-fitur3" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Manajemen Produk & Stok</h3>
+            <img src="img/Manajemen Produk.png" alt="Detail Halaman Manajemen Produk">
+            <p>Modul untuk mengelola katalog menu, harga, dan ketersediaan stok. Memiliki fitur filter berdasarkan kategori, status, dan urutan.</p>
+        </div>
+    </div>
+    <div id="modal-fitur4" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Manajemen Kategori Menu</h3>
+            <img src="img/Manajemen Kategori.png" alt="Detail Halaman Manajemen Kategori">
+            <p>Alat untuk membuat dan mengelola pengelompokan menu (kategori) seperti Makanan, Minuman, dan Snack. Penting untuk organisasi POS kasir.</p>
+        </div>
+    </div>
+    <div id="modal-fitur5" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Pelacakan Pesanan & Status</h3>
+            <img src="img/Manajemen Pesanan.png" alt="Detail Halaman Manajemen Pesanan">
+            <p>Fitur untuk melacak dan menganalisis semua pesanan yang diproses. Dilengkapi filter canggih berdasarkan Nomor Pesanan, Status (Selesai/Gagal), dan Tanggal transaksi.</p>
+        </div>
+    </div>
+    <div id="modal-fitur6" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Manajemen Staf & Akun</h3>
+            <img src="img/Manajemen User.png" alt="Detail Halaman Manajemen User">
+            <p>Modul untuk mendaftarkan dan mengelola akun staf (Kasir, Admin). Fitur ini mengontrol akses dan menjaga akuntabilitas dalam sistem.</p>
+        </div>
+    </div>
+    <div id="modal-fitur7" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Matriks Role & Permissions</h3>
+            <img src="img/Manajemen Role.png" alt="Detail Halaman Manajemen Role">
+            <p>Fitur kunci keamanan yang menentukan izin spesifik (hak baca/tulis) untuk setiap peran (Admin, Kasir, Owner), memastikan Kasir tidak dapat mengubah data sensitif.</p>
+        </div>
+    </div>
+    <div id="modal-fitur8" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Program Loyalitas Member</h3>
+            <img src="img/Manajemen Member.png" alt="Detail Halaman Manajemen Member">
+            <p>Modul untuk mencatat data pelanggan dan melacak poin loyalitas. Penting untuk menjalankan program retensi dan promosi berbasis member.</p>
+        </div>
+    </div>
+
+
+    <script>
+        const featureButtons = document.querySelectorAll('.feature-item');
+        const closeButtons = document.querySelectorAll('.close-button');
+        const modals = document.querySelectorAll('.modal');
+
+        // Fungsi Buka Modal
+        featureButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-target');
+                const targetModal = document.getElementById(modalId);
+                if (targetModal) {
+                    targetModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Fungsi Tutup Modal (Klik tombol 'x')
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.modal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Fungsi Tutup Modal (Klik di luar modal content)
+        window.addEventListener('click', (event) => {
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
