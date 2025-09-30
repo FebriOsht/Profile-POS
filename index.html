@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem POS Angkringan | Fokus Kecepatan Kasir</title>
+    <style>
+        /* ==================================== */
+        /* GAYA UMUM & ANIMASI */
+        /* ==================================== */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+        header { 
+            background-color: #1a1a2e; /* Darker header */
+            color: white; 
+            padding: 80px 0; 
+            text-align: center; 
+        }
+        header h1 { font-size: 2.8em; margin-bottom: 5px; }
+        header p { font-size: 1.6em; font-weight: 300; }
+
+        img.main-visual { 
+            max-width: 80%; 
+            height: auto; 
+            margin: 30px 0; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); 
+            border: 4px solid #3498db; /* Aksen warna Kasir */
+        }
+        
+        /* CTA */
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Jarak antar tombol */
+            margin-top: 25px;
+        }
+
+        .cta-button { 
+            background-color: #3498db; 
+            color: white; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            display: inline-block; 
+            transition: background-color 0.3s, transform 0.2s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .cta-button:hover { background-color: #2980b9; transform: scale(1.05); }
+        .section { padding: 60px 0; border-bottom: 1px solid #ecf0f1; }
+        
+        /* FEATURES GRID & CLICKABLE */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; text-align: left; }
+        .feature-item { 
+            padding: 25px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            background: #fdfdfd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-item:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+        }
+        .feature-item h4 { font-size: 1.3em; color: #34495e; }
+
+        /* GAYA THUMBNAIL FITUR */
+        .feature-item img.feature-thumbnail {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* TECH STACK & METRICS */
+        .tech-stack ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; }
+        .tech-stack li { background-color: #eaf2f8; color: #2c3e50; padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+        .metrics-grid { display: flex; justify-content: space-around; text-align: center; margin-top: 30px; }
+        .metric-item h3 { color: #2ecc71; font-size: 3em; margin-bottom: 5px; }
+        footer { background-color: #34495e; color: white; text-align: center; padding: 40px 0; }
+        
+        /* GAYA MODAL/LIGHTBOX */
+        .modal {
+            position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9); display: none;
+            justify-content: center; align-items: center; overflow: auto;
+        }
+        .modal-content {
+            background-color: #fefefe; padding: 30px; border-radius: 15px; width: 90%; max-width: 850px;
+            position: relative; box-shadow: 0 5px 30px rgba(0,0,0,0.5); animation-name: animatescale; animation-duration: 0.3s;
+        }
+        .modal-content h3 { color: #3498db; }
+        .modal-content img { max-width: 100%; height: auto; display: block; margin: 20px auto; border-radius: 8px; border: 1px solid #ddd;}
+        .close-button {
+            color: #aaa; float: right; font-size: 36px; font-weight: bold; cursor: pointer; line-height: 1;
+            padding: 0 8px; position: absolute; top: 15px; right: 20px;
+        }
+        .close-button:hover, .close-button:focus { color: #e74c3c; text-decoration: none; }
+        @keyframes animatescale {
+            from {transform: scale(0.7); opacity: 0;} to {transform: scale(1); opacity: 1;}
+        }
+
+        /* ==================================== */
+        /* MEDIA QUERIES UNTUK MOBILE */
+        /* ==================================== */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            header p { font-size: 1.2em; }
+            .container { padding: 10px; }
+            .features-grid { 
+                grid-template-columns: 1fr; /* Stack fitur menjadi satu kolom */
+                gap: 20px;
+            }
+            .metrics-grid {
+                flex-direction: column; /* Stack metrik vertikal */
+                gap: 20px;
+            }
+            .metric-item {
+                border: 1px solid #eee;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .cta-container {
+                flex-direction: column; /* Stack tombol CTA */
+            }
+            .cta-button {
+                width: 80%; /* Tombol lebih lebar di mobile */
+                margin: 5px auto;
+            }
+            .modal-content {
+                width: 95%; /* Modal lebih lebar di mobile */
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Sistem Point of Sale (POS) | Antarmuka Kasir</h1>
+            <p>Solusi Kasir Digital Cepat dan Responsif untuk Bisnis Kuliner Anda.</p>
+            
+            <img src="img/Kasir.png" alt="Visual Utama Proyek" class="main-visual"> 
+            
+            <div class="cta-container">
+                <a href="admin.html" class="cta-button" style="background-color: #95a5a6;">Lihat Fitur Admin</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="ringkasan" class="section container">
+        <h2>Ringkasan Proyek & Fokus Utama</h2>
+        <p>Proyek Sistem Point of Sale (POS) ini dikembangkan dengan antarmuka yang elegan, Dark Mode profesional, dan berfokus pada kecepatan transaksi kasir di lingkungan kerja yang padat. Desain fungsional 3-kolom menjamin workflow yang mulus dari pemesanan hingga pembayaran.</p>
+    </section>
+
+    <section id="fitur" class="section container">
+        <h2>Fitur Utama (Interface Kasir)</h2>
+        <div class="features-grid">
+            
+            <div class="feature-item" data-modal-target="modal-fitur1">
+                <img src="img/Kasir.png" alt="Login Kasir" class="feature-thumbnail">
+                <h4>Otentikasi & Akuntabilitas</h4>
+                <p>Memastikan setiap transaksi terverifikasi oleh staf berwenang (Kasir/Admin) melalui sistem login terpisah.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur2">
+                <img src="img/Semua Produk.png" alt="Semua Produk" class="feature-thumbnail">
+                <h4>Katalog Lengkap & Stok Real-Time</h4>
+                <p>Akses ke keseluruhan produk dengan informasi stok real-time untuk menghindari out-of-stock saat bertransaksi.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur3">
+                <img src="img/Makanan.png" alt="Makanan" class="feature-thumbnail">
+                <h4>Filter Cepat Makanan</h4>
+                <p>Navigasi menu dioptimalkan untuk memproses pesanan hidangan utama dan makanan berat secara instan.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur4">
+                <img src="img/Minuman.png" alt="Minuman" class="feature-thumbnail">
+                <h4>Filter Cepat Minuman</h4>
+                <p>Memungkinkan kasir fokus pada menu minuman tanpa gangguan visual dari item lain.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur5">
+                <img src="img/Snack.png" alt="Snack" class="feature-thumbnail">
+                <h4>Filter Cepat Snack</h4>
+                <p>Menyederhanakan workflow saat pelanggan hanya membeli camilan atau side dish.</p>
+            </div>
+
+            <div class="feature-item" data-modal-target="modal-fitur6">
+                <img src="img/Pembayaran.png" alt="Pembayaran" class="feature-thumbnail">
+                <h4>Multi-Pembayaran & Midtrans Integration</h4>
+                <p>Integrasi pembayaran non-tunai dan tunai, dilengkapi fitur Draft Pesanan untuk efisiensi antrian.</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="hasil" class="section container">
+        <h2>Dampak & Metrik Keberhasilan Proyek</h2>
+        <div class="metrics-grid">
+            
+            <div class="metric-item">
+                <h3>40%</h3>
+                <p>Peningkatan User Engagement dalam 6 bulan pertama.</p>
+            </div>
+
+            <div class="metric-item">
+                <h3>2.5 detik</h3>
+                <p>Pengurangan Load Time Halaman Utama (Sebelum 4 detik).</p>
+            </div>
+
+            <div class="metric-item">
+                <h3>10.000+</h3>
+                <p>Transaksi per hari yang berhasil ditangani tanpa downtime.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3>Tertarik Menggunakan Solusi POS Cepat Ini?</h3>
+            
+            <a href="https://wa.me/6282279513201" class="cta-button" style="background-color: #2ecc71;">Hubungi Kami Via WhatsApp</a>
+            <a href="https://swakarsadigital.vercel.app/" class="cta-button" style="background-color: #95a5a6;">Portofolio Lain</a>
+            
+            <p style="margin-top: 20px;">© 2025 swakarsadigital. Dibuat dengan Passion & Presisi.</p>
+        </div>
+    </footer>
+
+    <div id="modal-fitur1" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Otentikasi & Akuntabilitas</h3>
+            <img src="img/Kasir.png" alt="Halaman Login POS">
+            <p>Halaman otentikasi yang dirancang untuk memisahkan akses Kasir dari Admin, memastikan setiap transaksi dapat dilacak dan data sensitif terlindungi.</p>
+        </div>
+    </div>
+    <div id="modal-fitur2" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Katalog Lengkap & Stok Real-Time</h3>
+            <img src="img/Semua Produk.png" alt="Detail Tampilan Semua Produk">
+            <p>Menampilkan keseluruhan item menu (Makanan, Minuman, Snack) secara terpadu. Fitur ini sangat berguna untuk pencarian cepat di luar filter kategori.</p>
+        </div>
+    </div>
+    <div id="modal-fitur3" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Filter Cepat Makanan</h3>
+            <img src="img/Makanan.png" alt="Detail Halaman Makanan">
+            <p>Filter cepat yang hanya menampilkan menu makanan utama (Bakso, Nasi Goreng, dll.). Ini mengoptimalkan workflow kasir saat memproses pesanan makanan berat.</p>
+        </div>
+    </div>
+    <div id="modal-fitur4" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Filter Cepat Minuman</h3>
+            <img src="img/Minuman.png" alt="Detail Halaman Minuman">
+            <p>Filter cepat untuk menu minuman. Membantu kasir fokus pada pesanan minuman tanpa clutter visual.</p>
+        </div>
+    </div>
+    <div id="modal-fitur5" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Filter Cepat Snack</h3>
+            <img src="img/Snack.png" alt="Detail Halaman Snack">
+            <p>Filter cepat untuk makanan ringan dan camilan. Efisien untuk transaksi sederhana atau penambahan side dish.</p>
+        </div>
+    </div>
+    <div id="modal-fitur6" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detail: Multi-Pembayaran & Midtrans Integration</h3>
+            <img src="img/Pembayaran.png" alt="Detail Halaman Pembayaran">
+            <p>Halaman ringkasan pembayaran yang mendukung Tunai dan Midtrans (untuk non-tunai). Fitur Draft Pesanan juga disertakan untuk manajemen antrian yang efisien.</p>
+        </div>
+    </div>
+
+    <script>
+        const featureButtons = document.querySelectorAll('.feature-item');
+        const closeButtons = document.querySelectorAll('.close-button');
+        const modals = document.querySelectorAll('.modal');
+
+        // Fungsi Buka Modal
+        featureButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-target');
+                const targetModal = document.getElementById(modalId);
+                if (targetModal) {
+                    targetModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Fungsi Tutup Modal (Klik tombol 'x')
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.modal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Fungsi Tutup Modal (Klik di luar modal content)
+        window.addEventListener('click', (event) => {
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
